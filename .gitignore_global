@@ -1,0 +1,16 @@
+*~
+.DS_Store
+*.swo
+*.swp
+tags
+
+node_modules
+*.log
+.nvmrc
+
+*.pem
+.agignore
+.bundle
+.byebug_history
+
+.minitest-perf.db
