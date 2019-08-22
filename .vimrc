@@ -2,37 +2,41 @@ set nocompatible               " Round here we say Vim, not Vi
 filetype off                   " required!
 
 set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=/usr/local/opt/fzf
 call vundle#begin()
 
 " Vundle
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'kien/ctrlp.vim'
-Plugin 'mileszs/ack.vim'
+" Navigation + Searching
+Plugin 'rking/ag.vim'
+Plugin 'junegunn/fzf.vim'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-vinegar' " Directory management
+
+" Display + general formatting
 Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-vinegar'
-Plugin 'tpope/vim-fugitive'
-Plugin 'nono/vim-handlebars'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'fatih/vim-go'
-Plugin 'tpope/vim-endwise'
 Plugin 'itchyny/lightline.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-fugitive' " Git functionality
+Plugin 'tpope/vim-surround'
+Plugin 'tomtom/tcomment_vim'
+
+" Language specific syntax and formatting
+Plugin 'tpope/vim-rails'
+Plugin 'ecomba/vim-ruby-refactoring'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'spellman/vim-minitest'
+Plugin 'tpope/vim-endwise' " Add ends to ruby blocks
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'fatih/vim-go'
 Plugin 'mxw/vim-jsx'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'pangloss/vim-javascript'
-Plugin 'kentaroi/cocoa.vim'
-Plugin 'justinmk/vim-syntax-extra'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'tmhedberg/matchit'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'spellman/vim-minitest'
+Plugin 'hashivim/vim-terraform'
+Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
 
 call vundle#end()
 
@@ -53,6 +57,7 @@ augroup END
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
+set shell=/bin/bash
 set background=dark
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
@@ -72,14 +77,10 @@ set ttyfast
 " Use ag instead of grep
 set grepprg=ag\ --nogroup\ --nocolor
 let g:ackprg = 'ag --nogroup --column'
-" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-" ag is fast enough that CtrlP doesn't need to cache
-let g:ctrlp_use_caching = 0
 
+let g:ag_working_path_mode="r"
 
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'filename' ] ],
@@ -135,13 +136,16 @@ nmap <F5> :so $MYVIMRC<CR>
 " Resize equally
 nmap <leader>= <C-w>=
 " Fast Search
-nmap <leader>f :Ack
+nmap <leader>f :Ag
 
 nmap <leader>t :only <bar> AV<CR>
 nmap <leader>v :Vex<CR>
 
 " turn of search highlights
 nnoremap <leader><CR> :noh<CR>
+
+" setup fzf to control + p
+nnoremap <c-p> :Files<CR>
 
 " map <Leader>r :call RunCurrentSpecFile()<CR>
 " map <Leader>e :call RunNearestSpec()<CR>
