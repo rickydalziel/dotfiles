@@ -93,44 +93,27 @@ alias ....='cd ../../..'
 
 alias grep='grep --color=auto'
 alias psa='ps uax'
+alias vim='mvim -v'
 alias v='vim .'
 
-alias 1pc='~/1partCarbon'
-alias personal='~/personal'
-alias 1pcgo='~/1partCarbon/go/src/github.com/1partCarbon/'
-
 alias g='git'
-alias vim='nvim'
 alias zrc='vim ~/.zshrc'
 alias szrc='source ~/.zshrc'
 alias vrc='vim ~/.vimrc'
 
 alias swp='find . | grep .swp$'
-alias ctags="`brew --prefix`/bin/ctags"
 
 alias rc='bundle exec rails c'
 alias rs='bundle exec rails s'
 alias be='bundle exec'
+alias flt='cd ~/code/Float'
 
-alias ctg='ctags -R -f tags'
-
-alias pw='ansible-vault view ~/.pw.yml'
-alias pwedit='ansible-vault edit ~/.pw.yml'
-
-alias fs='foreman start'
-alias canary='open -a Google\ Chrome\ Canary --args --disable-web-security --user-data-dir=$HOME/Library/Application\ Support/Google/Chrome\ Canary/'
-
-export GOPATH=$HOME/1partCarbon/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:/usr/local/go/bin:$GOBIN
-
+source $(brew --prefix nvm)/nvm.sh
 export NVM_DIR="/Users/Ricky/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export ANDROID_HOME="/Users/Ricky/Library/Android/sdk"
-export ANDROID_SDK_ROOT="/Users/Ricky/Library/Android/sdk"
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+# export ANDROID_HOME="/Users/Ricky/Library/Android/sdk"
+# export ANDROID_SDK_ROOT="/Users/Ricky/Library/Android/sdk"
 
-export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
+# export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
 eval "$(rbenv init -)"
 
