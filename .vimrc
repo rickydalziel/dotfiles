@@ -6,7 +6,7 @@ set rtp+=/usr/local/opt/fzf
 call vundle#begin()
 
 " Vundle
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " Navigation + Searching
 Plugin 'rking/ag.vim'
@@ -27,16 +27,20 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/vim-rails'
 Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'thoughtbot/vim-rspec'
-Plugin 'spellman/vim-minitest'
+" Plugin 'spellman/vim-minitest'
 Plugin 'tpope/vim-endwise' " Add ends to ruby blocks
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'fatih/vim-go'
-Plugin 'mxw/vim-jsx'
+" Plugin 'kchmck/vim-coffee-script'
+" Plugin 'fatih/vim-go'
+" Plugin 'maxmellon/vim-jsx-pretty'
+" Plugin 'rhysd/vim-clang-format'
+" Plugin 'hashivim/vim-terraform'
+" Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
+"
+Plugin 'dense-analysis/ale'
+Plugin 'nikvdp/ejs-syntax'
 Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'rhysd/vim-clang-format'
-Plugin 'hashivim/vim-terraform'
-Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
+Plugin 'maxmellon/vim-jsx-pretty'
+Plugin 'chemzqm/vim-jsx-improve'
 
 call vundle#end()
 
@@ -76,9 +80,15 @@ set ttyfast
 
 " Use ag instead of grep
 set grepprg=ag\ --nogroup\ --nocolor
-let g:ackprg = 'ag --nogroup --column'
+let g:ackprg = 'ag --path-to-ignore ~/.ignore --nogroup --column'
 
 let g:ag_working_path_mode="r"
+
+" Set specific linters
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+      \   'javascript': ['eslint']
+      \}
 
 let g:lightline = {
       \ 'active': {
@@ -98,7 +108,7 @@ let g:lightline = {
 
 let mapleader = ","
 let g:go_fmt_command = "goimports"
-let g:rspec_command = "!bundle exec zeus rspec {spec}"
+" let g:rspec_command = "!bundle exec rspec {spec}"
 let g:clang_format#detect_style_file = 1
 " Basic config that I cannot live without
 set list
@@ -147,11 +157,11 @@ nnoremap <leader><CR> :noh<CR>
 " setup fzf to control + p
 nnoremap <c-p> :Files<CR>
 
-" map <Leader>r :call RunCurrentSpecFile()<CR>
-" map <Leader>e :call RunNearestSpec()<CR>
-" map <Leader>w :call RunLastSpec()<CR>
+map <Leader>r :call RunCurrentSpecFile()<CR>
+map <Leader>e :call RunNearestSpec()<CR>
+map <Leader>w :call RunLastSpec()<CR>
 
-map <Leader>r :Rake<CR>
+" map <Leader>r :Rake<CR>
 
 map <Leader>l :RExtractLet<CR>
 map <Leader>o :only<CR>

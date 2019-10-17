@@ -93,7 +93,7 @@ alias ....='cd ../../..'
 
 alias grep='grep --color=auto'
 alias psa='ps uax'
-alias vim='mvim -v'
+alias vim='nvim'
 alias v='vim .'
 
 alias g='git'
@@ -111,9 +111,12 @@ alias flt='cd ~/code/Float'
 source $(brew --prefix nvm)/nvm.sh
 export NVM_DIR="/Users/Ricky/.nvm"
 
+alias ag='ag --path-to-ignore ~/.ignore'
+
 # export ANDROID_HOME="/Users/Ricky/Library/Android/sdk"
 # export ANDROID_SDK_ROOT="/Users/Ricky/Library/Android/sdk"
 
 # export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
 eval "$(rbenv init -)"
 
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
