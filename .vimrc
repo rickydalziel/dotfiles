@@ -12,7 +12,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'rking/ag.vim'
 Plugin 'junegunn/fzf.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-vinegar' " Directory management
+Plugin 'scrooloose/nerdtree'
+Plugin 'dhruvasagar/vim-vinegar'
+Plugin 'jgdavey/tslime.vim'
 
 " Display + general formatting
 Plugin 'ervandew/supertab'
@@ -31,7 +33,6 @@ Plugin 'thoughtbot/vim-rspec'
 Plugin 'tpope/vim-endwise' " Add ends to ruby blocks
 " Plugin 'kchmck/vim-coffee-script'
 " Plugin 'fatih/vim-go'
-" Plugin 'maxmellon/vim-jsx-pretty'
 " Plugin 'rhysd/vim-clang-format'
 " Plugin 'hashivim/vim-terraform'
 " Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
@@ -40,9 +41,12 @@ Plugin 'dense-analysis/ale'
 Plugin 'nikvdp/ejs-syntax'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'maxmellon/vim-jsx-pretty'
-Plugin 'chemzqm/vim-jsx-improve'
+Plugin 'tpope/vim-projectionist'
+Plugin 'neomake/neomake'
 
 call vundle#end()
+
+runtime macros/matchit.vim
 
 " ================
 "  Ruby stuff
@@ -61,10 +65,11 @@ augroup END
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
+set synmaxcol=128
+syntax sync minlines=256
 set shell=/bin/bash
 set background=dark
 let g:solarized_termtrans=1
-let g:solarized_termcolors=256
 let g:solarized_contrast="high"
 let g:ruby_refactoring_map_keys=0
 colorscheme solarized
@@ -78,17 +83,29 @@ set lazyredraw
 set cursorline
 set ttyfast
 
+let g:vim_jsx_pretty_highlight_close_tag = 0
+let g:vim_jsx_pretty_colorful_config = 1
+
 " Use ag instead of grep
 set grepprg=ag\ --nogroup\ --nocolor
 let g:ackprg = 'ag --path-to-ignore ~/.ignore --nogroup --column'
 
 let g:ag_working_path_mode="r"
 
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+" You can disable this option too
+" if you don't want linters to run on opening a file
+let g:ale_lint_on_enter = 0
 " Set specific linters
-let g:ale_linters_explicit = 1
 let g:ale_linters = {
       \   'javascript': ['eslint']
       \}
+let g:ale_fixers = {'javascript': ['eslint'], 'ruby': ['rubocop']}
+
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window = 1
 
 let g:lightline = {
       \ 'active': {
@@ -106,9 +123,31 @@ let g:lightline = {
       \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
 \ }
 
+let g:projectionist_heuristics = {
+      \ "src/*.js": {
+      \    "alternate": "test/{}Spec.js"
+      \  },
+      \  "spec/*Spec.js": {
+      \    "alternate": "src/{}.js"
+      \  }
+\}
+
+" Run NeoMake on read and write operations
+autocmd! BufReadPost,BufWritePost * Neomake
+
+" Disable inherited syntastic
+let g:syntastic_mode_map = {
+  \ "mode": "passive",
+  \ "active_filetypes": [],
+  \ "passive_filetypes": [] }
+
+let g:neomake_serialize = 1
+let g:neomake_serialize_abort_on_error = 1
+
 let mapleader = ","
 let g:go_fmt_command = "goimports"
-" let g:rspec_command = "!bundle exec rspec {spec}"
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+let g:rspec_runner = "os_x_iterm"
 let g:clang_format#detect_style_file = 1
 " Basic config that I cannot live without
 set list
@@ -142,7 +181,7 @@ nmap <leader>. :e.<CR>
 " Back to the last buffer
 nmap <leader>b :b#<CR>
 " Reload the vimrc config
-nmap <F5> :so $MYVIMRC<CR>
+nmap <F5> :so ~/.vimrc<CR>
 " Resize equally
 nmap <leader>= <C-w>=
 " Fast Search
@@ -161,9 +200,9 @@ map <Leader>r :call RunCurrentSpecFile()<CR>
 map <Leader>e :call RunNearestSpec()<CR>
 map <Leader>w :call RunLastSpec()<CR>
 
-" map <Leader>r :Rake<CR>
+map <leader>l :ALEFix<CR>
 
-map <Leader>l :RExtractLet<CR>
+" map <Leader>r :Rake<CR>
 map <Leader>o :only<CR>
 
 autocmd BufWritePre * :%s/\s\+$//e

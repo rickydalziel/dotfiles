@@ -294,7 +294,6 @@ let colors_name = "solarized"
 " leave the hex values out entirely in that case and include only cterm colors)
 " We also check to see if user has set solarized (force use of the
 " neutral gray monotone palette component)
-let s:line_background = "#256060"
 if (has("gui_running") && g:solarized_degrade == 0)
     let s:vmode       = "gui"
     let s:base03      = "#002b36"
@@ -352,6 +351,7 @@ elseif g:solarized_termcolors != 256 && &t_Co >= 16
     let s:blue        = "4"
     let s:cyan        = "6"
     let s:green       = "2"
+    let s:line_background = "0"
 elseif g:solarized_termcolors == 256
     let s:vmode       = "cterm"
     let s:base03      = "234"
@@ -571,7 +571,7 @@ endif
 
 exe "hi! Normal"         .s:fmt_none   .s:fg_base0  .s:bg_back
 
-exe "hi! Comment"        .s:fmt_ital   .s:fg_base01 .s:bg_none
+exe "hi! Comment"        .s:fmt_ital   .s:fg_base00 .s:bg_none
 "       *Comment         any comment
 
 exe "hi! Constant"       .s:fmt_none   .s:fg_cyan   .s:bg_none
@@ -694,7 +694,7 @@ exe "hi! MatchParen"     .s:fmt_bold   .s:fg_red    .s:bg_base01
 "}}}
 " vim syntax highlighting "{{{
 " ---------------------------------------------------------------------
-exe "hi! vimLineComment" . s:fg_base01 .s:bg_none   .s:fmt_ital
+exe "hi! vimLineComment" . s:fg_base00 .s:bg_none   .s:fmt_ital
 exe "hi! vimCommentString".s:fg_violet .s:bg_none   .s:fmt_none
 hi! link vimVar Identifier
 hi! link vimFunc Function
@@ -720,7 +720,7 @@ exe "hi! vimGroup"       . s:fg_blue   .s:bg_none   .s:fmt_undb
 exe "hi! htmlTag"        . s:fg_base01 .s:bg_none   .s:fmt_none
 exe "hi! htmlEndTag"     . s:fg_base01 .s:bg_none   .s:fmt_none
 exe "hi! htmlTagN"       . s:fg_base1  .s:bg_none   .s:fmt_bold
-exe "hi! htmlTagName"    . s:fg_blue   .s:bg_none   .s:fmt_bold
+exe "hi! htmlTagName"    . s:fg_green   .s:bg_none   .s:fmt_bold
 exe "hi! htmlSpecialTagName". s:fg_blue  .s:bg_none .s:fmt_ital
 exe "hi! htmlArg"        . s:fg_base00 .s:bg_none   .s:fmt_none
 exe "hi! javaScript"     . s:fg_yellow .s:bg_none   .s:fmt_none
@@ -743,6 +743,7 @@ exe "hi! texRefLabel"    . s:fg_yellow .s:bg_back   .s:fmt_none
 " ruby highlighting "{{{
 " ---------------------------------------------------------------------
 exe "hi! rubyDefine"     . s:fg_green  .s:bg_back   .s:fmt_bold
+" exe "hi! rubySymbol"     . s:fg_magenta  .s:bg_back
 "rubyInclude
 "rubySharpBang
 "rubyAccess
@@ -757,7 +758,7 @@ exe "hi! rubyDefine"     . s:fg_green  .s:bg_back   .s:fmt_bold
 "hi! link rubyClass             Keyword
 "hi! link rubyModule            Keyword
 "hi! link rubyKeyword           Keyword
-"hi! link rubyOperator          Operator
+" hi! link rubyOperator          Operator
 hi! link rubyIdentifier        Identifier
 "hi! link rubyInstanceVariable  Identifier
 "hi! link rubyGlobalVariable    Identifier
