@@ -137,4 +137,6 @@ prompt_agnoster_setup() {
   zstyle ':vcs_info:git*' actionformats '%b (%a)'
 }
 
+preexec () { echo -ne "\e[0m" }
+
 prompt_agnoster_setup "$@"

@@ -109,12 +109,10 @@ alias be='bundle exec'
 alias flt='cd ~/code/Float'
 
 source $(brew --prefix nvm)/nvm.sh
-export NVM_DIR="/Users/Ricky/.nvm"
+export NVM_DIR="/Users/rickydalziel/.nvm"
 
 alias ag='ag --path-to-ignore ~/.ignore'
 
-# export ANDROID_HOME="/Users/Ricky/Library/Android/sdk"
-# export ANDROID_SDK_ROOT="/Users/Ricky/Library/Android/sdk"
 
 # export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
 eval "$(rbenv init -)"

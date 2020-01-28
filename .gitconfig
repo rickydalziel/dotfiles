@@ -11,9 +11,9 @@
   cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
 [core]
   excludesfile = ~/.gitignore_global
-  editor = vim
+  editor = nvim
 [user]
   name = Ricky Dalziel
-  email = dalzielricky@gmail.com
+  email = ricky@floatapp.com
 [push]
 	default = simple

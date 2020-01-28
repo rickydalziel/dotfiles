@@ -12,8 +12,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'rking/ag.vim'
 Plugin 'junegunn/fzf.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'scrooloose/nerdtree'
-Plugin 'dhruvasagar/vim-vinegar'
+" Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-vinegar'
+"Plugin 'dhruvasagar/vim-vinegar'
 Plugin 'jgdavey/tslime.vim'
 
 " Display + general formatting
@@ -37,14 +38,16 @@ Plugin 'tpope/vim-endwise' " Add ends to ruby blocks
 " Plugin 'hashivim/vim-terraform'
 " Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
 "
-Plugin 'dense-analysis/ale'
-Plugin 'nikvdp/ejs-syntax'
+" Plugin 'dense-analysis/ale'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'maxmellon/vim-jsx-pretty'
 Plugin 'tpope/vim-projectionist'
 Plugin 'neomake/neomake'
 
 call vundle#end()
+
+" Full config: when writing or reading a buffer, and on changes in insert and
+" normal mode (after 1s; no delay when writing).
 
 runtime macros/matchit.vim
 
@@ -84,25 +87,13 @@ set cursorline
 set ttyfast
 
 let g:vim_jsx_pretty_highlight_close_tag = 0
+let g:vim_jsx_pretty_template_tags = ['html', 'js', 'jsx']
 let g:vim_jsx_pretty_colorful_config = 1
 
 " Use ag instead of grep
 set grepprg=ag\ --nogroup\ --nocolor
 let g:ackprg = 'ag --path-to-ignore ~/.ignore --nogroup --column'
-
 let g:ag_working_path_mode="r"
-
-" Write this in your vimrc file
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-" You can disable this option too
-" if you don't want linters to run on opening a file
-let g:ale_lint_on_enter = 0
-" Set specific linters
-let g:ale_linters = {
-      \   'javascript': ['eslint']
-      \}
-let g:ale_fixers = {'javascript': ['eslint'], 'ruby': ['rubocop']}
 
 let g:tslime_always_current_session = 1
 let g:tslime_always_current_window = 1
@@ -142,7 +133,6 @@ let g:syntastic_mode_map = {
   \ "passive_filetypes": [] }
 
 let g:neomake_serialize = 1
-let g:neomake_serialize_abort_on_error = 1
 
 let mapleader = ","
 let g:go_fmt_command = "goimports"
@@ -200,12 +190,14 @@ map <Leader>r :call RunCurrentSpecFile()<CR>
 map <Leader>e :call RunNearestSpec()<CR>
 map <Leader>w :call RunLastSpec()<CR>
 
-map <leader>l :ALEFix<CR>
+" map <leader>l :ALEFix<CR>
 
 " map <Leader>r :Rake<CR>
 map <Leader>o :only<CR>
 
-autocmd BufWritePre * :%s/\s\+$//e
+nmap <unique> <c-±> <Plug>NetrwRefresh
+
+autocmd BufWritePre * call <SID>StripTrailingWhitespaces()
 
 function! MyModified()
   if &filetype == "help"
@@ -243,4 +235,29 @@ function! MyFilename()
   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyOnBattery()
+  if has('macunix')
+    return match(system('pmset -g batt'), "Now drawing from 'Battery Power'") != -1
+  elseif has('unix')
+    return readfile('/sys/class/power_supply/AC/online') == ['0']
+  endif
+  return 0
+endfunction
+
+if MyOnBattery()
+  call neomake#configure#automake('w')
+else
+  call neomake#configure#automake('nw', 1000)
+endif
+
+function! <SID>StripTrailingWhitespaces()
+  " save last search & cursor position
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  let @/=_s
+  call cursor(l, c)
 endfunction
