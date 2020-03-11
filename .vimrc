@@ -12,9 +12,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'rking/ag.vim'
 Plugin 'junegunn/fzf.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-" Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-vinegar'
-"Plugin 'dhruvasagar/vim-vinegar'
 Plugin 'jgdavey/tslime.vim'
 
 " Display + general formatting
@@ -126,6 +124,8 @@ let g:projectionist_heuristics = {
 " Run NeoMake on read and write operations
 autocmd! BufReadPost,BufWritePost * Neomake
 
+call neomake#configure#automake('w')
+
 " Disable inherited syntastic
 let g:syntastic_mode_map = {
   \ "mode": "passive",
@@ -236,21 +236,6 @@ function! MyFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
-
-function! MyOnBattery()
-  if has('macunix')
-    return match(system('pmset -g batt'), "Now drawing from 'Battery Power'") != -1
-  elseif has('unix')
-    return readfile('/sys/class/power_supply/AC/online') == ['0']
-  endif
-  return 0
-endfunction
-
-if MyOnBattery()
-  call neomake#configure#automake('w')
-else
-  call neomake#configure#automake('nw', 1000)
-endif
 
 function! <SID>StripTrailingWhitespaces()
   " save last search & cursor position

@@ -118,3 +118,4 @@ alias ag='ag --path-to-ignore ~/.ignore'
 eval "$(rbenv init -)"
 
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export ANDROID_HOME='/Users/rickydalziel/Library/Android/sdk'

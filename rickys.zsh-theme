@@ -113,13 +113,15 @@ prompt_agnoster_main() {
   prompt_dir
   prompt_git
   prompt_git_branch
-  # prompt_time
   prompt_end
 }
 
 prompt_agnoster_precmd() {
   vcs_info
+  _lineup=$'\e[1A'
+  _linedown=$'\e[1B'
   PROMPT='%{%f%b%k%}$(prompt_agnoster_main)'
+  RPROMPT=%{${_lineup}%}'$(prompt_time)'%{${_linedown}%}
 }
 
 
