@@ -55,9 +55,8 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH=/usr/local/bin:$HOME/bin:$PATH
-export ANSIBLE_NOCOWS=1
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
+export PATH=/Users/rickydalziel/Library/Python/2.7/bin:$PATH
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -83,7 +82,7 @@ export ANSIBLE_NOCOWS=1
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls='ls -G'
+alias ls='exa'
 alias ll='ls -lhatr'
 alias l='ls -la'
 alias la='ls -a'
@@ -113,9 +112,16 @@ export NVM_DIR="/Users/rickydalziel/.nvm"
 
 alias ag='ag --path-to-ignore ~/.ignore'
 
+alias ctags="`brew --prefix`/bin/ctags"
 
 # export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
-eval "$(rbenv init -)"
 
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+eval "$(rbenv init -)"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export ANDROID_HOME='/Users/rickydalziel/Library/Android/sdk'
+export PATH="/usr/local/opt/postgresql@11/bin:$PATH"

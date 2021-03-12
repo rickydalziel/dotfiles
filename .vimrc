@@ -12,40 +12,33 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'rking/ag.vim'
 Plugin 'junegunn/fzf.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-vinegar'
 Plugin 'jgdavey/tslime.vim'
+Plugin 'tpope/vim-vinegar'
 
 " Display + general formatting
 Plugin 'ervandew/supertab'
 Plugin 'itchyny/lightline.vim'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-fugitive' " Git functionality
 Plugin 'tpope/vim-surround'
 Plugin 'tomtom/tcomment_vim'
 
-" Language specific syntax and formatting
-Plugin 'tpope/vim-rails'
-Plugin 'ecomba/vim-ruby-refactoring'
+" Heelpful plugins
 Plugin 'thoughtbot/vim-rspec'
-" Plugin 'spellman/vim-minitest'
 Plugin 'tpope/vim-endwise' " Add ends to ruby blocks
-" Plugin 'kchmck/vim-coffee-script'
-" Plugin 'fatih/vim-go'
-" Plugin 'rhysd/vim-clang-format'
-" Plugin 'hashivim/vim-terraform'
-" Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
-"
-" Plugin 'dense-analysis/ale'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'maxmellon/vim-jsx-pretty'
 Plugin 'tpope/vim-projectionist'
 Plugin 'neomake/neomake'
 
-call vundle#end()
+" Language specific syntax and formatting
+Plugin 'tpope/vim-rails'
+Plugin 'yuezk/vim-js'
+Plugin 'maxmellon/vim-jsx-pretty'
+" Plugin 'spellman/vim-minitest'
+" Plugin 'kchmck/vim-coffee-script'
+" Plugin 'fatih/vim-go'
+" Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
+" Plugin 'dense-analysis/ale'
 
-" Full config: when writing or reading a buffer, and on changes in insert and
-" normal mode (after 1s; no delay when writing).
+call vundle#end()
 
 runtime macros/matchit.vim
 
@@ -61,10 +54,13 @@ augroup myfiletypes
   autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
   autocmd FileType c,cpp set sw=2 sts=8 nolist noexpandtab
   " autocmd FileType c,cpp setl nolist autoindent cindent
+  autocmd FileType netrw call s:RemoveNetrwMap()
 augroup END
 " ================
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufWritePre * call <SID>StripTrailingWhitespaces()
+autocmd! BufReadPost,BufWritePost * Neomake
 
 set synmaxcol=128
 syntax sync minlines=256
@@ -72,7 +68,6 @@ set shell=/bin/bash
 set background=dark
 let g:solarized_termtrans=1
 let g:solarized_contrast="high"
-let g:ruby_refactoring_map_keys=0
 colorscheme solarized
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
 highlight link multiple_cursors_visual Visual
@@ -83,6 +78,12 @@ set incsearch
 set lazyredraw
 set cursorline
 set ttyfast
+set clipboard+=unnamedplus
+set tags=tags,./tags
+
+" let g:netrw_sort_options = "i"
+" let g:netrw_banner = 0
+" let g:netrw_list_hide= '.*\.swp$,.DS_Store,*/tmp/*,*.so,*.swp,*.zip,*.git,^\.\.\=/\=$'
 
 let g:vim_jsx_pretty_highlight_close_tag = 0
 let g:vim_jsx_pretty_template_tags = ['html', 'js', 'jsx']
@@ -93,14 +94,12 @@ set grepprg=ag\ --nogroup\ --nocolor
 let g:ackprg = 'ag --path-to-ignore ~/.ignore --nogroup --column'
 let g:ag_working_path_mode="r"
 
-let g:tslime_always_current_session = 1
-let g:tslime_always_current_window = 1
-
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'filename' ] ],
       \'right': [ [ 'lineinfo' ],
+      \           [ 'filetype'],
       \            [ 'percent' ]]
       \ },
       \ 'component_function': {
@@ -112,6 +111,8 @@ let g:lightline = {
       \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
 \ }
 
+
+let g:projectionist_ignore_term = 1
 let g:projectionist_heuristics = {
       \ "src/*.js": {
       \    "alternate": "test/{}Spec.js"
@@ -121,10 +122,8 @@ let g:projectionist_heuristics = {
       \  }
 \}
 
-" Run NeoMake on read and write operations
-autocmd! BufReadPost,BufWritePost * Neomake
-
-call neomake#configure#automake('w')
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window = 1
 
 " Disable inherited syntastic
 let g:syntastic_mode_map = {
@@ -133,13 +132,12 @@ let g:syntastic_mode_map = {
   \ "passive_filetypes": [] }
 
 let g:neomake_serialize = 1
+call neomake#configure#automake('w')
 
 let mapleader = ","
-let g:go_fmt_command = "goimports"
 let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 let g:rspec_runner = "os_x_iterm"
-let g:clang_format#detect_style_file = 1
-" Basic config that I cannot live without
+
 set list
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set history=500                 " keep 500 lines of command line history
@@ -175,7 +173,7 @@ nmap <F5> :so ~/.vimrc<CR>
 " Resize equally
 nmap <leader>= <C-w>=
 " Fast Search
-nmap <leader>f :Ag
+nmap <leader>f :Ag<space>
 
 nmap <leader>t :only <bar> AV<CR>
 nmap <leader>v :Vex<CR>
@@ -186,18 +184,21 @@ nnoremap <leader><CR> :noh<CR>
 " setup fzf to control + p
 nnoremap <c-p> :Files<CR>
 
+" substitute selected text
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
 map <Leader>r :call RunCurrentSpecFile()<CR>
 map <Leader>e :call RunNearestSpec()<CR>
 map <Leader>w :call RunLastSpec()<CR>
-
-" map <leader>l :ALEFix<CR>
-
-" map <Leader>r :Rake<CR>
 map <Leader>o :only<CR>
 
-nmap <unique> <c-±> <Plug>NetrwRefresh
-
-autocmd BufWritePre * call <SID>StripTrailingWhitespaces()
+if executable('rg')
+  set grepprg=rg\ --color=never
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+  let g:ctrlp_use_caching = 0
+else
+  let g:ctrlp_clear_cache_on_exit = 0
+endif
 
 function! MyModified()
   if &filetype == "help"
@@ -212,7 +213,7 @@ function! MyModified()
 endfunction
 
 function! MyFugitive()
-  if winwidth(0) > 100
+  if winwidth(0) > 120
     if exists("*fugitive#head")
       let _ = fugitive#head()
       return strlen(_) ? "\ue0a0 "._ : ''
@@ -245,4 +246,10 @@ function! <SID>StripTrailingWhitespaces()
   %s/\s\+$//e
   let @/=_s
   call cursor(l, c)
+endfunction
+
+function s:RemoveNetrwMap()
+  if hasmapto('<Plug>NetrwRefresh')
+    unmap <buffer> <C-l>
+  endif
 endfunction
