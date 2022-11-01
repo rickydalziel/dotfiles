@@ -58,6 +58,22 @@ export PATH=/usr/local/bin:$HOME/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 export PATH=/Users/rickydalziel/Library/Python/2.7/bin:$PATH
 
+setup_keyboard () {
+  # Get current value of keyboard accessibility (enabled = true , disabled = false)
+  gsettings get org.gnome.desktop.a11y.keyboard enable
+  # Get current value of slowkeys-enable
+  gsettings get org.gnome.desktop.a11y.keyboard slowkeys-enable
+  # Turn it off!
+  gsettings set org.gnome.desktop.a11y.keyboard slowkeys-enable false
+
+  # Get current value of stickykey-enable
+  gsettings get org.gnome.desktop.a11y.keyboard stickykeys-enable
+  # Turn it off!
+  gsettings set org.gnome.desktop.a11y.keyboard stickykeys-enable false
+  # Finally, turn the entire keyboard accessibility options off (this should disable the SHIFT key shortcuts)
+  gsettings get org.gnome.desktop.a11y.keyboard enable false
+}
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -107,12 +123,9 @@ alias rs='bundle exec rails s'
 alias be='bundle exec'
 alias flt='cd ~/code/Float'
 
-source $(brew --prefix nvm)/nvm.sh
-export NVM_DIR="/Users/rickydalziel/.nvm"
+export NVM_DIR="/home/ricky/.nvm"
 
 alias ag='ag --path-to-ignore ~/.ignore'
-
-alias ctags="`brew --prefix`/bin/ctags"
 
 # export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
 
@@ -120,8 +133,27 @@ eval "$(rbenv init -)"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export ANDROID_HOME='/Users/rickydalziel/Library/Android/sdk'
-export PATH="/usr/local/opt/postgresql@11/bin:$PATH"
+export PATH="/usr/lib/postgresql/12/bin:/home/ricky/bin/:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/ricky/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/ricky/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/ricky/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/ricky/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+setup_keyboard > /dev/null 2>&1

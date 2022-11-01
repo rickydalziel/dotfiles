@@ -16,4 +16,5 @@
   name = Ricky Dalziel
   email = ricky@floatapp.com
 [push]
-	default = simple
+  default = simple
+  autoSetupRemote = true

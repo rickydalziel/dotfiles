@@ -1,44 +1,41 @@
 set nocompatible               " Round here we say Vim, not Vi
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/Vundle.vim
-set rtp+=/usr/local/opt/fzf
-call vundle#begin()
+set rtp+=/usr/bin/fzf
 
-" Vundle
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " Navigation + Searching
-Plugin 'rking/ag.vim'
-Plugin 'junegunn/fzf.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'jgdavey/tslime.vim'
-Plugin 'tpope/vim-vinegar'
+Plug 'rking/ag.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'jgdavey/tslime.vim'
+Plug 'tpope/vim-vinegar'
+Plug 'ggandor/leap.nvim'
 
 " Display + general formatting
-Plugin 'ervandew/supertab'
-Plugin 'itchyny/lightline.vim'
-Plugin 'tpope/vim-fugitive' " Git functionality
-Plugin 'tpope/vim-surround'
-Plugin 'tomtom/tcomment_vim'
+Plug 'ervandew/supertab'
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-fugitive' " Git functionality
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'tomtom/tcomment_vim'
 
 " Heelpful plugins
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'tpope/vim-endwise' " Add ends to ruby blocks
-Plugin 'tpope/vim-projectionist'
-Plugin 'neomake/neomake'
+Plug 'thoughtbot/vim-rspec'
+Plug 'tpope/vim-endwise' " Add ends to ruby blocks
+Plug 'tpope/vim-projectionist'
+Plug 'dense-analysis/ale'
 
 " Language specific syntax and formatting
-Plugin 'tpope/vim-rails'
-Plugin 'yuezk/vim-js'
-Plugin 'maxmellon/vim-jsx-pretty'
-" Plugin 'spellman/vim-minitest'
-" Plugin 'kchmck/vim-coffee-script'
-" Plugin 'fatih/vim-go'
-" Plugin 'justinmk/vim-syntax-extra' " C syntax improvements
-" Plugin 'dense-analysis/ale'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
 
-call vundle#end()
+call plug#end()
 
 runtime macros/matchit.vim
 
@@ -50,17 +47,18 @@ filetype plugin indent on
 augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
+  autocmd BufWritePre * call <SID>StripTrailingWhitespaces()
   " autoindent with two spaces, always expand tabs
   autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
   autocmd FileType c,cpp set sw=2 sts=8 nolist noexpandtab
   " autocmd FileType c,cpp setl nolist autoindent cindent
   autocmd FileType netrw call s:RemoveNetrwMap()
+  autocmd FileType netrw call lightline#update()
 augroup END
 " ================
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd BufWritePre * call <SID>StripTrailingWhitespaces()
-autocmd! BufReadPost,BufWritePost * Neomake
+au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 
 set synmaxcol=128
 syntax sync minlines=256
@@ -72,6 +70,7 @@ colorscheme solarized
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
 highlight link multiple_cursors_visual Visual
 highlight LineNr ctermbg=NONE
+
 set noshowmode
 set hlsearch
 set incsearch
@@ -80,10 +79,6 @@ set cursorline
 set ttyfast
 set clipboard+=unnamedplus
 set tags=tags,./tags
-
-" let g:netrw_sort_options = "i"
-" let g:netrw_banner = 0
-" let g:netrw_list_hide= '.*\.swp$,.DS_Store,*/tmp/*,*.so,*.swp,*.zip,*.git,^\.\.\=/\=$'
 
 let g:vim_jsx_pretty_highlight_close_tag = 0
 let g:vim_jsx_pretty_template_tags = ['html', 'js', 'jsx']
@@ -113,26 +108,22 @@ let g:lightline = {
 
 
 let g:projectionist_ignore_term = 1
-let g:projectionist_heuristics = {
-      \ "src/*.js": {
-      \    "alternate": "test/{}Spec.js"
-      \  },
-      \  "spec/*Spec.js": {
-      \    "alternate": "src/{}.js"
-      \  }
-\}
 
 let g:tslime_always_current_session = 1
 let g:tslime_always_current_window = 1
 
-" Disable inherited syntastic
-let g:syntastic_mode_map = {
-  \ "mode": "passive",
-  \ "active_filetypes": [],
-  \ "passive_filetypes": [] }
-
-let g:neomake_serialize = 1
-call neomake#configure#automake('w')
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'ruby': ['standardrb'],
+\   'javascript': ['standard'],
+\   'css': ['stylelint'],
+\   'eruby': ['erblint'] }
+let g:ale_linters = {
+\   'ruby': ['standardrb'],
+\   'css': ['stylelint'],
+\   'javascript': ['standard'],
+\   'eruby': ['erblint']   }
 
 let mapleader = ","
 let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
@@ -166,6 +157,8 @@ set synmaxcol=250
 
 " Qucikly show navigation at the root
 nmap <leader>. :e.<CR>
+" Go to next search result
+nmap <leader>n :cnext<CR>
 " Back to the last buffer
 nmap <leader>b :b#<CR>
 " Reload the vimrc config
@@ -186,6 +179,8 @@ nnoremap <c-p> :Files<CR>
 
 " substitute selected text
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+vnoremap <C-s> "hy/<C-r>h<CR>
 
 map <Leader>r :call RunCurrentSpecFile()<CR>
 map <Leader>e :call RunNearestSpec()<CR>
@@ -238,6 +233,19 @@ function! MyFilename()
        \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
+function s:RemoveNetrwMap()
+  if hasmapto('<Plug>NetrwRefresh')
+    unmap <buffer> <C-l>
+  endif
+endfunction
+
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 function! <SID>StripTrailingWhitespaces()
   " save last search & cursor position
   let _s=@/
@@ -248,8 +256,4 @@ function! <SID>StripTrailingWhitespaces()
   call cursor(l, c)
 endfunction
 
-function s:RemoveNetrwMap()
-  if hasmapto('<Plug>NetrwRefresh')
-    unmap <buffer> <C-l>
-  endif
-endfunction
+lua require('leap').add_default_mappings()
