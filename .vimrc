@@ -6,13 +6,13 @@ set rtp+=/usr/bin/fzf
 call plug#begin('~/.vim/plugged')
 
 " Navigation + Searching
-Plug 'rking/ag.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'jgdavey/tslime.vim'
 Plug 'tpope/vim-vinegar'
 Plug 'ggandor/leap.nvim'
+Plug 'mileszs/ack.vim'
 
 " Display + general formatting
 Plug 'ervandew/supertab'
@@ -165,8 +165,8 @@ nmap <leader>b :b#<CR>
 nmap <F5> :so ~/.vimrc<CR>
 " Resize equally
 nmap <leader>= <C-w>=
-" Fast Search
-nmap <leader>f :Ag<space>
+cnoreabbrev Ack Ack!
+nnoremap <Leader>f :Ack!<Space>
 
 nmap <leader>t :only <bar> AV<CR>
 nmap <leader>v :Vex<CR>
@@ -186,6 +186,7 @@ map <Leader>r :call RunCurrentSpecFile()<CR>
 map <Leader>e :call RunNearestSpec()<CR>
 map <Leader>w :call RunLastSpec()<CR>
 map <Leader>o :only<CR>
+command! ALEToggleFixer execute "let g:ale_fix_on_save = get(g:, 'ale_fix_on_save', 0) ? 0 : 1"
 
 if executable('rg')
   set grepprg=rg\ --color=never
