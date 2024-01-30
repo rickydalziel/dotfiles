@@ -1,8 +1,8 @@
 {
   "web-client/src/*.js": {
-    "alternate": "web-client/spec/{}Spec.js"
+    "alternate": "web-client/src/{}.test.js"
   },
-  "web-client/spec/*Spec.js": {
+  "web-client/src/*.test.js": {
     "alternate": "web-client/src/{}.js"
   }
 }
