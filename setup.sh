@@ -32,18 +32,22 @@ create_symlink() {
   ln -s "$source" "$target"
 }
 
-# Symlink dotfiles (files starting with .)
-for file in "$DOTFILES_DIR"/.??*; do
-  # Skip .git directory
-  if [ "$(basename "$file")" = ".git" ]; then
-    continue
+# List of dotfiles to symlink
+dotfiles=(
+  ".gitconfig"
+  ".gitignore_global"
+  ".projections.json"
+  ".tmux.conf"
+  ".zshrc"
+)
+
+# Symlink each dotfile
+for file in "${dotfiles[@]}"; do
+  if [ -e "$DOTFILES_DIR/$file" ]; then
+    create_symlink "$DOTFILES_DIR/$file" "$HOME/$file"
+  else
+    echo "Warning: $file not found in $DOTFILES_DIR"
   fi
-
-  # Skip .gitignore_global (we'll handle it separately if needed)
-  filename=$(basename "$file")
-  target="$HOME/$filename"
-
-  create_symlink "$file" "$target"
 done
 
 # Symlink nvim config to ~/.config/nvim
@@ -53,6 +57,8 @@ create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 # Symlink zsh theme if oh-my-zsh is installed
 if [ -d "$HOME/.oh-my-zsh/custom/themes" ]; then
   create_symlink "$DOTFILES_DIR/rickys.zsh-theme" "$HOME/.oh-my-zsh/custom/themes/rickys.zsh-theme"
+else
+  echo "Oh-my-zsh not found, skipping zsh theme symlink"
 fi
 
 echo ""
