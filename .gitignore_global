@@ -19,3 +19,8 @@ node_modules
 .projections.json
 
 *@neomake*.rb
+
+.claude
+CLAUDE.md
+
+setup_changes

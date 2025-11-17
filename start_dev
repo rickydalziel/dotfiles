@@ -1,0 +1,41 @@
+#!/bin/bash
+
+SESSION_NAME="float_dev"
+DEV_SESSION_NAME="float_work"
+
+cd ~/code/Float
+
+# Check if tmux session already exists
+tmux has-session -t $SESSION_NAME 2>/dev/null
+
+if [ $? != 0 ]; then
+    # Create new tmux session for services
+    tmux new-session -d -s $SESSION_NAME
+
+    tmux send-keys -t $SESSION_NAME:1.1 "yarn" C-m
+    tmux send-keys -t $SESSION_NAME:1.1 "bundle install" C-m
+    # Start dev env
+    tmux send-keys -t $SESSION_NAME:1.1 "./start_dev" C-m
+
+    echo "Created tmux session '$SESSION_NAME' for services"
+else
+    echo "Tmux session '$SESSION_NAME' already exists"
+fi
+
+# Check if development session already exists
+tmux has-session -t $DEV_SESSION_NAME 2>/dev/null
+
+if [ $? != 0 ]; then
+    # Create new tmux session for development work
+    tmux new-session -d -s $DEV_SESSION_NAME
+
+    tmux send-keys -t $DEV_SESSION_NAME:1.1 "v" C-m
+
+    tmux new-window -t $DEV_SESSION_NAME
+    echo "Created tmux session '$DEV_SESSION_NAME' for development work"
+else
+    echo "Tmux session '$DEV_SESSION_NAME' already exists"
+fi
+
+# Attach to development session
+tmux attach-session -t $DEV_SESSION_NAME

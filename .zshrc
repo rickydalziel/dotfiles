@@ -122,6 +122,7 @@ alias rc='bundle exec rails c'
 alias rs='bundle exec rails s'
 alias be='bundle exec'
 alias flt='cd ~/code/Float'
+alias python='python3'
 
 export NVM_DIR="/home/ricky/.nvm"
 
@@ -157,3 +158,5 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 setup_keyboard > /dev/null 2>&1
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
