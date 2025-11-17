@@ -70,3 +70,7 @@ if [ -z "$(ls -A "$BACKUP_DIR")" ]; then
   rmdir "$BACKUP_DIR"
   echo "No files were backed up."
 fi
+
+echo ""
+echo "To restore GNOME Terminal profiles, run:"
+echo "  ./restore-gnome-terminal.sh"
