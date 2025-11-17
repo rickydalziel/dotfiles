@@ -1,0 +1,20 @@
+# Ignore plugin directories
+pack/
+plugin/
+
+# Lazy.nvim stores plugins elsewhere, but ignore if they end up here
+lazy-lock.json
+
+# Ignore vim swap files
+*.swp
+*.swo
+*~
+
+# Ignore session files
+Session.vim
+
+# Ignore undo history
+.undodir/
+
+# Ignore old vim config
+init.vim_old
