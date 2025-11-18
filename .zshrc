@@ -128,34 +128,17 @@ export NVM_DIR="/home/ricky/.nvm"
 
 alias ag='ag --path-to-ignore ~/.ignore'
 
-# export PATH="$HOME/.rbenv/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
-
 eval "$(rbenv init -)"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export PATH="/usr/lib/postgresql/12/bin:/home/ricky/bin/:$PATH"
+export PATH="/usr/lib/postgresql/16/bin:/home/ricky/bin/:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/ricky/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/ricky/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/ricky/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/ricky/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 setup_keyboard > /dev/null 2>&1
 
