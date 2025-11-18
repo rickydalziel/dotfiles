@@ -2,7 +2,8 @@
 
 # Restore GNOME Terminal profiles from dconf dump
 
-DOTFILES_DIR="$HOME/code/dotfiles"
+# Get the directory where this script is located
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROFILE_FILE="$DOTFILES_DIR/gnome-terminal-profiles.dconf"
 
 if [ ! -f "$PROFILE_FILE" ]; then

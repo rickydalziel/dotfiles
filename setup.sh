@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Dotfiles setup script
-# This script creates symlinks from the home directory to dotfiles in ~/code/dotfiles
+# This script creates symlinks from the home directory to dotfiles
 
-DOTFILES_DIR="$HOME/code/dotfiles"
+# Get the directory where this script is located
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 
 echo "Setting up dotfiles from $DOTFILES_DIR"
@@ -59,6 +60,13 @@ if [ -d "$HOME/.oh-my-zsh/custom/themes" ]; then
   create_symlink "$DOTFILES_DIR/rickys.zsh-theme" "$HOME/.oh-my-zsh/custom/themes/rickys.zsh-theme"
 else
   echo "Oh-my-zsh not found, skipping zsh theme symlink"
+fi
+
+# Symlink start_dev script
+if [ -e "$DOTFILES_DIR/start_dev" ]; then
+  create_symlink "$DOTFILES_DIR/start_dev" "$HOME/start_dev"
+else
+  echo "Warning: start_dev not found in $DOTFILES_DIR"
 fi
 
 echo ""
