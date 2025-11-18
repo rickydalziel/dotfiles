@@ -69,6 +69,14 @@ else
   echo "Warning: start_dev not found in $DOTFILES_DIR"
 fi
 
+# Symlink tmux-zoom-out-vim to ~/bin
+mkdir -p "$HOME/bin"
+if [ -e "$DOTFILES_DIR/tmux-zoom-out-vim" ]; then
+  create_symlink "$DOTFILES_DIR/tmux-zoom-out-vim" "$HOME/bin/tmux-zoom-out-vim"
+else
+  echo "Warning: tmux-zoom-out-vim not found in $DOTFILES_DIR"
+fi
+
 echo ""
 echo "Dotfiles setup complete!"
 echo "Backup of existing files (if any): $BACKUP_DIR"
