@@ -294,7 +294,8 @@ let colors_name = "solarized"
 " leave the hex values out entirely in that case and include only cterm colors)
 " We also check to see if user has set solarized (force use of the
 " neutral gray monotone palette component)
-if (has("gui_running") && g:solarized_degrade == 0)
+let s:use_gui_colors = has("gui_running") || (exists('+termguicolors') && &termguicolors)
+if (s:use_gui_colors && g:solarized_degrade == 0)
     let s:vmode       = "gui"
     let s:base03      = "#002b36"
     let s:base02      = "#073642"
@@ -312,7 +313,8 @@ if (has("gui_running") && g:solarized_degrade == 0)
     let s:blue        = "#268bd2"
     let s:cyan        = "#2aa198"
     let s:green       = "#859900"
-elseif (has("gui_running") && g:solarized_degrade == 1)
+    let s:line_background = "#005f5f"
+elseif (s:use_gui_colors && g:solarized_degrade == 1)
     " These colors are identical to the 256 color mode. They may be viewed
     " while in gui mode via "let g:solarized_degrade=1", though this is not
     " recommened and is for testing only.
@@ -333,6 +335,7 @@ elseif (has("gui_running") && g:solarized_degrade == 1)
     let s:blue        = "#0087ff"
     let s:cyan        = "#00afaf"
     let s:green       = "#5f8700"
+    let s:line_background = "#005f5f"
 elseif g:solarized_termcolors != 256 && &t_Co >= 16
     let s:vmode       = "cterm"
     let s:base03      = "8"
@@ -523,7 +526,7 @@ exe "let s:fmt_ital     = ' ".s:vmode."=NONE".          " term=NONE".    "'"
 exe "let s:fmt_revr     = ' ".s:vmode."=NONE".s:r.      " term=NONE".s:r."'"
 exe "let s:fmt_stnd     = ' ".s:vmode."=NONE".s:s.      " term=NONE".s:s."'"
 
-if has("gui_running")
+if s:use_gui_colors
     exe "let s:sp_none      = ' guisp=".s:none   ."'"
     exe "let s:sp_back      = ' guisp=".s:back   ."'"
     exe "let s:sp_base03    = ' guisp=".s:base03 ."'"
