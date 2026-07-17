@@ -133,6 +133,7 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export BAT_THEME="Solarized (dark)"
 export PATH="/usr/lib/postgresql/16/bin:/home/ricky/bin/:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
