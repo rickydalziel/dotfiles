@@ -64,3 +64,20 @@ autocmd("FileType", {
     vim.opt_local.equalprg = "xmllint --format --recover - 2>/dev/null"
   end,
 })
+
+-- Auto-reload files changed outside of vim
+local autoreload = augroup("autoreload", { clear = true })
+
+-- Trigger checktime on focus and buffer enter
+autocmd({ "FocusGained", "BufEnter" }, {
+  group = autoreload,
+  pattern = "*",
+  command = "checktime",
+})
+
+-- Automatically reload files when changed outside vim (but not in insert mode)
+autocmd("CursorHold", {
+  group = autoreload,
+  pattern = "*",
+  command = "checktime",
+})

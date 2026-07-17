@@ -2,8 +2,17 @@ return {
   "github/copilot.vim",
   event = "VimEnter",
   config = function()
-    -- Use Node 22 for Copilot
-    vim.g.copilot_node_command = "/home/ricky/.nvm/versions/node/v22.21.1/bin/node"
+    -- Automatically find the latest Node version from nvm
+    local node_path = vim.fn.expand("$HOME/.nvm/versions/node")
+    if vim.fn.isdirectory(node_path) == 1 then
+      local versions = vim.fn.readdir(node_path, function(name)
+        return vim.fn.isdirectory(node_path .. "/" .. name) == 1
+      end)
+      if #versions > 0 then
+        table.sort(versions, function(a, b) return a > b end)
+        vim.g.copilot_node_command = node_path .. "/" .. versions[1] .. "/bin/node"
+      end
+    end
 
     -- Disable default Tab mapping (we'll use Ctrl+Space instead)
     vim.g.copilot_no_tab_map = true

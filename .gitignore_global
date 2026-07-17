@@ -24,3 +24,7 @@ node_modules
 CLAUDE.md
 
 setup_changes
+
+docs/superpowers/
+.mcp.json
+.playwright-mcp/

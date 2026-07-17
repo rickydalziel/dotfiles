@@ -60,6 +60,6 @@ vim.g.lightline = {
     modified = "MyModified",
     filename = "MyFilename",
   },
-  separator = { left = "\u{e0b0}", right = "\u{e0b2}" },
-  subseparator = { left = "\u{e0b1}", right = "\u{e0b3}" },
+  separator = { left = "", right = "" },
+  subseparator = { left = "|", right = "|" },
 }
