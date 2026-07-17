@@ -69,7 +69,12 @@ vim.cmd("filetype plugin indent on")
 vim.cmd("runtime macros/matchit.vim")
 
 -- Colorscheme settings (with error protection)
-vim.opt.termguicolors = true
+-- Nvim auto-enables termguicolors when it detects RGB/truecolor terminal
+-- support (true here via tmux's ":RGB" terminal-overrides). Solarized is
+-- configured for cterm/indexed colors to match this terminal's patched
+-- ANSI palette, so force truecolor off or every highlight loses its color
+-- (ctermfg is set but ignored, leaving only leftover default attributes).
+vim.opt.termguicolors = false
 vim.g.solarized_termtrans = 1
 vim.g.solarized_contrast = "high"
 

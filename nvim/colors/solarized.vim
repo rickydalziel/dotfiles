@@ -294,7 +294,7 @@ let colors_name = "solarized"
 " leave the hex values out entirely in that case and include only cterm colors)
 " We also check to see if user has set solarized (force use of the
 " neutral gray monotone palette component)
-let s:use_gui_colors = has("gui_running") || (exists('+termguicolors') && &termguicolors)
+let s:use_gui_colors = has("gui_running")
 if (s:use_gui_colors && g:solarized_degrade == 0)
     let s:vmode       = "gui"
     let s:base03      = "#002b36"
@@ -313,7 +313,7 @@ if (s:use_gui_colors && g:solarized_degrade == 0)
     let s:blue        = "#268bd2"
     let s:cyan        = "#2aa198"
     let s:green       = "#859900"
-    let s:line_background = "#005f5f"
+    let s:line_background = "#073642"
 elseif (s:use_gui_colors && g:solarized_degrade == 1)
     " These colors are identical to the 256 color mode. They may be viewed
     " while in gui mode via "let g:solarized_degrade=1", though this is not
@@ -475,44 +475,45 @@ endif
 " Highlighting primitives"{{{
 " ---------------------------------------------------------------------
 
-exe "let s:bg_none      = ' ".s:vmode."bg=".s:none   ."'"
-exe "let s:bg_back      = ' ".s:vmode."bg=".s:back   ."'"
-exe "let s:bg_base03    = ' ".s:vmode."bg=".s:base03 ."'"
-exe "let s:bg_base02    = ' ".s:vmode."bg=".s:base02 ."'"
-exe "let s:bg_base01    = ' ".s:vmode."bg=".s:base01 ."'"
-exe "let s:bg_base00    = ' ".s:vmode."bg=".s:base00 ."'"
-exe "let s:bg_base0     = ' ".s:vmode."bg=".s:base0  ."'"
-exe "let s:bg_base1     = ' ".s:vmode."bg=".s:base1  ."'"
-exe "let s:bg_base2     = ' ".s:vmode."bg=".s:base2  ."'"
-exe "let s:bg_base3     = ' ".s:vmode."bg=".s:base3  ."'"
-exe "let s:bg_green     = ' ".s:vmode."bg=".s:green  ."'"
-exe "let s:bg_yellow    = ' ".s:vmode."bg=".s:yellow ."'"
-exe "let s:bg_orange    = ' ".s:vmode."bg=".s:orange ."'"
-exe "let s:bg_red       = ' ".s:vmode."bg=".s:red    ."'"
-exe "let s:bg_magenta   = ' ".s:vmode."bg=".s:magenta."'"
-exe "let s:bg_violet    = ' ".s:vmode."bg=".s:violet ."'"
-exe "let s:bg_blue      = ' ".s:vmode."bg=".s:blue   ."'"
-exe "let s:bg_cyan      = ' ".s:vmode."bg=".s:cyan   ."'"
-exe "let s:bg_line_background      = ' ".s:vmode."bg=".s:line_background   ."'"
+let s:other_vmode = (s:vmode ==# "cterm") ? "gui" : "cterm"
+exe "let s:bg_none      = ' ".s:vmode."bg=".s:none   ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_back      = ' ".s:vmode."bg=".s:back   ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base03    = ' ".s:vmode."bg=".s:base03 ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base02    = ' ".s:vmode."bg=".s:base02 ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base01    = ' ".s:vmode."bg=".s:base01 ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base00    = ' ".s:vmode."bg=".s:base00 ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base0     = ' ".s:vmode."bg=".s:base0  ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base1     = ' ".s:vmode."bg=".s:base1  ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base2     = ' ".s:vmode."bg=".s:base2  ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_base3     = ' ".s:vmode."bg=".s:base3  ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_green     = ' ".s:vmode."bg=".s:green  ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_yellow    = ' ".s:vmode."bg=".s:yellow ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_orange    = ' ".s:vmode."bg=".s:orange ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_red       = ' ".s:vmode."bg=".s:red    ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_magenta   = ' ".s:vmode."bg=".s:magenta." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_violet    = ' ".s:vmode."bg=".s:violet ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_blue      = ' ".s:vmode."bg=".s:blue   ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_cyan      = ' ".s:vmode."bg=".s:cyan   ." ".s:other_vmode."bg=NONE'"
+exe "let s:bg_line_background      = ' ".s:vmode."bg=".s:line_background   ." ".s:other_vmode."bg=NONE'"
 
-exe "let s:fg_none      = ' ".s:vmode."fg=".s:none   ."'"
-exe "let s:fg_back      = ' ".s:vmode."fg=".s:back   ."'"
-exe "let s:fg_base03    = ' ".s:vmode."fg=".s:base03 ."'"
-exe "let s:fg_base02    = ' ".s:vmode."fg=".s:base02 ."'"
-exe "let s:fg_base01    = ' ".s:vmode."fg=".s:base01 ."'"
-exe "let s:fg_base00    = ' ".s:vmode."fg=".s:base00 ."'"
-exe "let s:fg_base0     = ' ".s:vmode."fg=".s:base0  ."'"
-exe "let s:fg_base1     = ' ".s:vmode."fg=".s:base1  ."'"
-exe "let s:fg_base2     = ' ".s:vmode."fg=".s:base2  ."'"
-exe "let s:fg_base3     = ' ".s:vmode."fg=".s:base3  ."'"
-exe "let s:fg_green     = ' ".s:vmode."fg=".s:green  ."'"
-exe "let s:fg_yellow    = ' ".s:vmode."fg=".s:yellow ."'"
-exe "let s:fg_orange    = ' ".s:vmode."fg=".s:orange ."'"
-exe "let s:fg_red       = ' ".s:vmode."fg=".s:red    ."'"
-exe "let s:fg_magenta   = ' ".s:vmode."fg=".s:magenta."'"
-exe "let s:fg_violet    = ' ".s:vmode."fg=".s:violet ."'"
-exe "let s:fg_blue      = ' ".s:vmode."fg=".s:blue   ."'"
-exe "let s:fg_cyan      = ' ".s:vmode."fg=".s:cyan   ."'"
+exe "let s:fg_none      = ' ".s:vmode."fg=".s:none   ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_back      = ' ".s:vmode."fg=".s:back   ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base03    = ' ".s:vmode."fg=".s:base03 ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base02    = ' ".s:vmode."fg=".s:base02 ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base01    = ' ".s:vmode."fg=".s:base01 ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base00    = ' ".s:vmode."fg=".s:base00 ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base0     = ' ".s:vmode."fg=".s:base0  ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base1     = ' ".s:vmode."fg=".s:base1  ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base2     = ' ".s:vmode."fg=".s:base2  ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_base3     = ' ".s:vmode."fg=".s:base3  ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_green     = ' ".s:vmode."fg=".s:green  ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_yellow    = ' ".s:vmode."fg=".s:yellow ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_orange    = ' ".s:vmode."fg=".s:orange ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_red       = ' ".s:vmode."fg=".s:red    ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_magenta   = ' ".s:vmode."fg=".s:magenta." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_violet    = ' ".s:vmode."fg=".s:violet ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_blue      = ' ".s:vmode."fg=".s:blue   ." ".s:other_vmode."fg=NONE'"
+exe "let s:fg_cyan      = ' ".s:vmode."fg=".s:cyan   ." ".s:other_vmode."fg=NONE'"
 
 exe "let s:fmt_none     = ' ".s:vmode."=NONE".          " term=NONE".    "'"
 exe "let s:fmt_bold     = ' ".s:vmode."=NONE".s:b.      " term=NONE".s:b."'"
@@ -593,6 +594,10 @@ exe "hi! Identifier"     .s:fmt_none   .s:fg_blue   .s:bg_none
 "        Function        function name (also: methods for classes)
 " Same as String above: Nvim sets Function directly, not as a link.
 hi! link Function Identifier
+" Nvim's built-in default colorscheme also sets the treesitter @variable
+" capture directly (covers most plain identifiers), so it leaks through
+" unless explicitly linked here too.
+hi! link @variable Identifier
 "
 exe "hi! Statement"      .s:fmt_none   .s:fg_green  .s:bg_none
 "       *Statement       any statement
@@ -624,6 +629,47 @@ exe "hi! Special"        .s:fmt_none   .s:fg_red    .s:bg_none
 "        Delimiter       character that needs attention
 "        SpecialComment  special things inside a comment
 "        Debug           debugging statements
+" Nvim's built-in default colorscheme sets Delimiter directly too.
+hi! link Delimiter Special
+
+" Nvim's default treesitter capture names go well beyond the legacy groups
+" above. Most of them (@string, @comment, @keyword, @operator, etc.) already
+" fall back to a legacy group via Nvim's own built-in default links, which
+" survive "hi clear". But a large chunk of the standard capture set
+" (:h treesitter-highlight-groups) has no default link at all, so without
+" these they render with no highlight, i.e. plain Normal text. Since that
+" set includes practically every delimiter, bracket, function call and
+" keyword, the effect is most of any buffer showing up as flat grey text.
+hi! link @variable.member Identifier
+hi! link @variable.parameter Identifier
+hi! link @punctuation.delimiter Delimiter
+hi! link @punctuation.bracket Delimiter
+hi! link @function.call Function
+hi! link @function.method Function
+hi! link @function.method.call Function
+hi! link @function.macro Macro
+hi! link @constant.macro Macro
+hi! link @keyword.conditional Conditional
+hi! link @keyword.conditional.ternary Conditional
+hi! link @keyword.coroutine Keyword
+hi! link @keyword.debug Debug
+hi! link @keyword.directive PreProc
+hi! link @keyword.directive.define Define
+hi! link @keyword.exception Exception
+hi! link @keyword.function Keyword
+hi! link @keyword.import Include
+hi! link @keyword.modifier StorageClass
+hi! link @keyword.operator Keyword
+hi! link @keyword.repeat Repeat
+hi! link @keyword.return Keyword
+hi! link @keyword.type Structure
+hi! link @type.definition Type
+hi! link @string.documentation String
+hi! link @string.special.path String
+hi! link @string.special.symbol String
+hi! link @comment.documentation Comment
+hi! link @tag.attribute Identifier
+hi! link @tag.delimiter Delimiter
 
 exe "hi! Underlined"     .s:fmt_none   .s:fg_violet .s:bg_none
 "       *Underlined      text that stands out, HTML links
