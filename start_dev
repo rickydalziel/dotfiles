@@ -12,10 +12,10 @@ if [ $? != 0 ]; then
     # Create new tmux session for services
     tmux new-session -d -s $SESSION_NAME
 
-    tmux send-keys -t $SESSION_NAME:1.1 "yarn" C-m
-    tmux send-keys -t $SESSION_NAME:1.1 "bundle install" C-m
-    # Start dev env
-    tmux send-keys -t $SESSION_NAME:1.1 "./start_dev" C-m
+    # Bring up the devcontainer (builds/starts compose services, runs postCreateCommand)
+    tmux send-keys -t $SESSION_NAME:1.1 "devcontainer up --workspace-folder ~/code/Float" C-m
+    # Start dev env inside the container
+    tmux send-keys -t $SESSION_NAME:1.1 "devcontainer exec --workspace-folder ~/code/Float ./start_dev" C-m
 
     echo "Created tmux session '$SESSION_NAME' for services"
 else

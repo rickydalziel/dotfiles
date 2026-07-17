@@ -584,10 +584,15 @@ exe "hi! Constant"       .s:fmt_none   .s:fg_cyan   .s:bg_none
 "        Number          a number constant: 234, 0xff
 "        Boolean         a boolean constant: TRUE, false
 "        Float           a floating point constant: 2.3e10
+" Nvim's built-in default colorscheme sets String directly (not as a link),
+" so it survives `hi clear` / `syntax reset` and needs an explicit override.
+hi! link String Constant
 
 exe "hi! Identifier"     .s:fmt_none   .s:fg_blue   .s:bg_none
 "       *Identifier      any variable name
 "        Function        function name (also: methods for classes)
+" Same as String above: Nvim sets Function directly, not as a link.
+hi! link Function Identifier
 "
 exe "hi! Statement"      .s:fmt_none   .s:fg_green  .s:bg_none
 "       *Statement       any statement
@@ -597,6 +602,7 @@ exe "hi! Statement"      .s:fmt_none   .s:fg_green  .s:bg_none
 "        Operator        "sizeof", "+", "*", etc.
 "        Keyword         any other keyword
 "        Exception       try, catch, throw
+hi! link Operator Statement
 
 exe "hi! PreProc"        .s:fmt_none   .s:fg_orange .s:bg_none
 "       *PreProc         generic Preprocessor

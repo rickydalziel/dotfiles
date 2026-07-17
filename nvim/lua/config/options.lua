@@ -69,6 +69,7 @@ vim.cmd("filetype plugin indent on")
 vim.cmd("runtime macros/matchit.vim")
 
 -- Colorscheme settings (with error protection)
+vim.opt.termguicolors = true
 vim.g.solarized_termtrans = 1
 vim.g.solarized_contrast = "high"
 
