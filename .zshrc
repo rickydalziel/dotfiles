@@ -113,7 +113,7 @@ alias v='vim .'
 alias g='git'
 alias zrc='vim ~/.zshrc'
 alias szrc='source ~/.zshrc'
-alias vrc='vim ~/.vimrc'
+alias vrc='vim ~/.config/nvim/init.lua'
 
 alias swp='find . | grep .swp$'
 
