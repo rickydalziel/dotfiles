@@ -12,10 +12,12 @@ if [ $? != 0 ]; then
     # Create new tmux session for services
     tmux new-session -d -s $SESSION_NAME
 
-    # Bring up the devcontainer (builds/starts compose services, runs postCreateCommand)
-    tmux send-keys -t $SESSION_NAME:1.1 "devcontainer up --workspace-folder ~/code/Float" C-m
-    # Start dev env inside the container
-    tmux send-keys -t $SESSION_NAME:1.1 "devcontainer exec --workspace-folder ~/code/Float ./start_dev" C-m
+    # Bring up the devcontainer, clear a stale Rails server pid left over from an
+    # unclean shutdown, then start the dev env inside the container. Chained with
+    # && in a single send-keys call so bash enforces the ordering itself, rather
+    # than relying on tmux to send each command only after the previous one
+    # finishes (it doesn't wait, so separate send-keys calls can race).
+    tmux send-keys -t $SESSION_NAME:1.1 "devcontainer up --workspace-folder ~/code/Float && devcontainer exec --workspace-folder ~/code/Float bash -c 'test -f tmp/pids/server.pid && ! kill -0 \$(cat tmp/pids/server.pid) 2>/dev/null && rm -f tmp/pids/server.pid; true' && devcontainer exec --workspace-folder ~/code/Float ./start_dev" C-m
 
     echo "Created tmux session '$SESSION_NAME' for services"
 else

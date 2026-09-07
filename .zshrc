@@ -122,6 +122,7 @@ alias rs='bundle exec rails s'
 alias be='bundle exec'
 alias flt='cd ~/code/Float'
 alias python='python3'
+alias dce='devcontainer exec --workspace-folder ~/code/Float'
 
 export NVM_DIR="/home/ricky/.nvm"
 
